@@ -50,7 +50,7 @@ else
 fi
 
 # enable VCS systems you use
-zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' enable git
 
 # check-for-changes can be really slow.
 # you should disable it, if you work with large repositories
@@ -110,6 +110,5 @@ function steeef_precmd {
 }
 add-zsh-hook precmd steeef_precmd
 
-PROMPT=$'
-%{$MAGENTA%}%n%{$reset_color%} at %{$ORANGE%}%m%{$reset_color%} in %{$GREEN%}%~%{$reset_color%} $vcs_info_msg_0_$(virtualenv_info)%{$reset_color%}
+PROMPT=$'%{$MAGENTA%}%n%{$reset_color%} at %{$ORANGE%}%m%{$reset_color%} in %{$GREEN%}%~%{$reset_color%} $vcs_info_msg_0_$(virtualenv_info)%{$reset_color%}
 $ %{$reset_color%}'
