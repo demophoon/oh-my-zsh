@@ -7,11 +7,6 @@
 # git untracked files modification from Brian Carper:
 # http://briancarper.net/blog/570/git-info-in-your-zsh-prompt
 
-function virtualenv_info {
-    [ $VIRTUAL_ENV ] && echo '('$fg[blue]`basename $VIRTUAL_ENV`%{$reset_color%}') '
-}
-PR_GIT_UPDATE=1
-
 setopt prompt_subst
 autoload colors
 colors
@@ -27,6 +22,7 @@ if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
     GREEN="%F{190}$PR_BOLD"
     PURPLE="%F{141}$PR_BOLD"
     WHITE="%F{0}$PR_BOLD"
+    GREY="%F{237}"
     RED="%F{161}$PR_BOLD"
 
     turquoise="%F{81}"
@@ -40,6 +36,7 @@ else
     GREEN=$(tput setaf 2)
     PURPLE=$(tput setaf 1)
     WHITE=$(tput setaf 7)
+    GREY=$(tput setaf 7)
     RED="%fg[red]"
 
     turquoise="$fg[cyan]"
@@ -55,6 +52,11 @@ zstyle ':vcs_info:*' enable git
 # check-for-changes can be really slow.
 # you should disable it, if you work with large repositories
 zstyle ':vcs_info:*:prompt:*' check-for-changes true
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '('$fg[blue]`basename $VIRTUAL_ENV`%{$GREY%}') '
+}
+PR_GIT_UPDATE=1
 
 # set formats
 # %b - branchname
@@ -98,9 +100,9 @@ function steeef_precmd {
         # check for untracked files or updated submodules, since vcs_info doesn't
         if git ls-files --other --exclude-standard 2> /dev/null | grep -q "."; then
             PR_GIT_UPDATE=1
-            FMT_BRANCH="(%{$PURPLE%}%b%u%c%{$RED%}●${PR_RST})"
+            FMT_BRANCH="%{$GREY%}on %{$PURPLE%}%b%u%c%{$RED%}●${PR_RST}"
         else
-            FMT_BRANCH="(%{$PURPLE%}%b%u%c${PR_RST})"
+            FMT_BRANCH="%{$GREY%}on %{$PURPLE%}%b%u%c${PR_RST}"
         fi
         zstyle ':vcs_info:*:prompt:*' formats "${FMT_BRANCH} "
 
@@ -110,5 +112,5 @@ function steeef_precmd {
 }
 add-zsh-hook precmd steeef_precmd
 
-PROMPT=$'%{$MAGENTA%}%n%{$reset_color%} at %{$ORANGE%}%m%{$reset_color%} in %{$GREEN%}%~%{$reset_color%} $vcs_info_msg_0_$(virtualenv_info)%{$reset_color%}
-$ %{$reset_color%}'
+PROMPT=$'%{$MAGENTA%}%n%{$GREY%} at %{$ORANGE%}%m%{$GREY%} in %{$GREEN%}%~%{$GREY%} $vcs_info_msg_0_$(virtualenv_info)
+%{$GREY%}$ %{$reset_color%}'
