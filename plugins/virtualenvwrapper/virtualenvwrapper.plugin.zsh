@@ -39,7 +39,7 @@ if [[ ! $DISABLE_VENV_CD -eq 1 ]]; then
       # Check if this is a Git repo
       PROJECT_ROOT=`pwd`
       while [[ "$PROJECT_ROOT" != "/" && ! -e "$PROJECT_ROOT/.venv" ]]; do
-        PROJECT_ROOT=`realpath $PROJECT_ROOT/..`
+        PROJECT_ROOT=`cd $PROJECT_ROOT/..;pwd`
       done
       if [[ "$PROJECT_ROOT" == "/" ]]; then
         PROJECT_ROOT="."
